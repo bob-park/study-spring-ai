@@ -1,11 +1,10 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.4'
+    id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'org.bobpark'
-version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
@@ -13,14 +12,76 @@ java {
     }
 }
 
+ext {
+    malgnStarterVersion = "1.0.4-RC2-2025.04.13"
+
+    springCloudVersion = '2024.0.0'
+    springCloudNetflixVersion = '4.2.0'
+
+    queryDslVersion = "5.0.0"
+    lombokVersion = "1.18.36"
+}
+
 repositories {
     mavenCentral()
+
+    // malgn spring boot starter
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/malgn/dependency-repository")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_GRADLE_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_GRADLE_ACCESS_TOKEN")
+        }
+    }
+
+    // spring ai
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven {
+        name = 'Central Portal Snapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    // malgn spring boot starter
+    implementation "com.malgn:malgn-spring-boot-starter:${malgnStarterVersion}"
+
+    // spring boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spring ai
+    implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
+    implementation 'org.springframework.ai:spring-ai-openai'
+
+    // openai
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
+
+    // jdbc
+    implementation 'org.postgresql:postgresql:42.7.3'
+
+    // p6spy
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2'
+
+    // lombok
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // querydsl
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+    implementation("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+    testAnnotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+
 }
 
 tasks.named('test') {
