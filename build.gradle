@@ -20,6 +20,8 @@ ext {
 
     queryDslVersion = "5.0.0"
     lombokVersion = "1.18.36"
+
+    springAiVersion = "1.0.0-M6"
 }
 
 repositories {
@@ -35,13 +37,6 @@ repositories {
         }
     }
 
-    // spring ai
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://repo.spring.io/snapshot' }
-    maven {
-        name = 'Central Portal Snapshots'
-        url = 'https://central.sonatype.com/repository/maven-snapshots/'
-    }
 }
 
 dependencies {
@@ -56,13 +51,8 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // spring ai
-    implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
-    implementation 'org.springframework.ai:spring-ai-openai'
-
-    // openai
-    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
-
+    // spring ai openai
+    implementation "org.springframework.ai:spring-ai-openai-spring-boot-starter"
 
     // jdbc
     implementation 'org.postgresql:postgresql:42.7.3'
@@ -82,6 +72,14 @@ dependencies {
     annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
     testAnnotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
 
+
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+    }
 }
 
 tasks.named('test') {
