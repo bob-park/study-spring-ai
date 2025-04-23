@@ -43,9 +43,10 @@ public class DataLoader {
             PdfDocumentReaderConfig config =
                 PdfDocumentReaderConfig.builder()
                     .withPageTopMargin(0)
-                    .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
-                        .withNumberOfTopTextLinesToDelete(0)
-                        .build())
+                    .withPageExtractedTextFormatter(
+                        ExtractedTextFormatter.builder()
+                            .withNumberOfTopTextLinesToDelete(0)
+                            .build())
                     .withPagesPerDocument(1)
                     .build();
 
