@@ -21,18 +21,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class MovieLoader {
+public class HotelLoader {
 
     private final VectorStore vectorStore;
     private final JdbcClient jdbcClient;
 
-    @Value("classpath:movie_plots_korean.txt")
+    @Value("classpath:data.txt")
     private Resource resource;
 
     @PostConstruct
     public void init() throws Exception {
         Integer count =
-            jdbcClient.sql("select count(*) from movie_vector")
+            jdbcClient.sql("select count(*) from hotel_vector")
                 .query(Integer.class)
                 .single();
 
@@ -45,7 +45,7 @@ public class MovieLoader {
         List<Document> documents =
             Files.lines(resource.getFile().toPath())
                 .map(Document::new)
-                .collect(Collectors.toList());
+                .toList();
 
         TextSplitter textSplitter = new TokenTextSplitter();
 
