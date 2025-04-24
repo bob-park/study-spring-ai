@@ -38,7 +38,7 @@ public class MovieRagService {
                     .builder()
                     .query(query)
                     .similarityThreshold(0.8) // 수치가 낮으면 정확도 down, 개수 up
-                    .topK(5) // 추출 개수
+                    .topK(2) // 추출 개수
                     .build());
 
         if (movies == null) {
