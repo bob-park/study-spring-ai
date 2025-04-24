@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import org.bobpark.domain.ai.openai.model.GenerateRequest;
@@ -20,6 +19,7 @@ public class OpenAiV1Service implements OpenAiService {
 
     @Override
     public String generate(String message) {
+
         return chatClient.prompt()
             .user(message)
             .call()
@@ -42,7 +42,7 @@ public class OpenAiV1Service implements OpenAiService {
             content();
     }
 
-    public ChatResponse generateResponseWithPlaceholder(GenerateRequest request){
+    public ChatResponse generateResponseWithPlaceholder(GenerateRequest request) {
         return chatClient.prompt()
             .system(
                 ps ->
